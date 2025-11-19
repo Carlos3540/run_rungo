@@ -1,48 +1,53 @@
 name: Build Android APK
 
 on:
-  push:
-    branches: [ main ]
   workflow_dispatch:
 
 jobs:
-  build-apk:
+  build:
     runs-on: ubuntu-latest
     
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v4
-      
+    - uses: actions/checkout@v4
+    
     - name: Setup Node.js 20
       uses: actions/setup-node@v4
       with:
         node-version: '20'
-        cache: 'npm'
         
     - name: Install dependencies
       run: |
         npm install
         npm install @capacitor/cli @capacitor/core @capacitor/android
-      
-    - name: Build Next.js app
-      run: npm run build
-      
-    - name: Setup Java
-      uses: actions/setup-java@v3
-      with:
-        distribution: 'temurin'
-        java-version: '11'
-      
-    - name: Initialize Capacitor
+        
+    - name: Create simple web app for Capacitor
       run: |
-        npx cap init MindSwap com.mindswap.app --web-dir .next
+        # Crear una versión simple para Capacitor
+        mkdir -p capacitor-web
+        echo '<!DOCTYPE html>
+        <html>
+        <head>
+            <title>MindSwap</title>
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <style>
+                body { margin: 0; padding: 0; }
+                iframe { width: 100%; height: 100vh; border: none; }
+            </style>
+        </head>
+        <body>
+            <iframe src="https://opulent-tribble-r4ppwpppw777fxpxx-3000.app.github.dev"></iframe>
+        </body>
+        </html>' > capacitor-web/index.html
+        
+    - name: Generate APK
+      run: |
+        npx cap init MindSwap com.mindswap.app --web-dir capacitor-web
         npx cap add android
         
-        # Configuración para Netlify
         echo '{
           "appId": "com.mindswap.app",
           "appName": "MindSwap",
-          "webDir": ".next",
+          "webDir": "capacitor-web",
           "server": {
             "url": "https://opulent-tribble-r4ppwpppw777fxpxx-3000.app.github.dev",
             "cleartext": true
@@ -50,15 +55,10 @@ jobs:
         }' > capacitor.config.json
         
         npx cap sync
-      
-    - name: Build Android APK
-      run: |
-        cd android
-        chmod +x gradlew
-        ./gradlew assembleDebug
-      
+        cd android && ./gradlew assembleDebug
+        
     - name: Upload APK
       uses: actions/upload-artifact@v4
       with:
-        name: mindswap-apk
+        name: mindswap-app
         path: android/app/build/outputs/apk/debug/app-debug.apk
