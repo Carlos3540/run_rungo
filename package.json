@@ -6,7 +6,9 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "fix:capacitor": "sed -i 's|@capacitor/android/capacitor|@capacitor/capacitor/android/src|' android/capacitor.settings.gradle",
+    "sync": "npx cap sync android && npm run fix:capacitor"
   },
   "dependencies": {
     "@capacitor/android": "^7.4.4",
