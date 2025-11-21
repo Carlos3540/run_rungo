@@ -1,8 +1,5 @@
-// Este archivo define los módulos incluidos en el proyecto Android.
-// Configuración limpia para Capacitor sin plugins Cordova.
-
 apply from: 'capacitor.settings.gradle'
 
 include ':app'
 include ':capacitor-android'
-project(':capacitor-android').projectDir = new File('../node_modules/@capacitor/android/capacitor')
+project(':capacitor-android').projectDir = new File('../node_modules/@capacitor/android/src')
