@@ -2,5 +2,4 @@ apply from: 'capacitor.settings.gradle'
 
 include ':app'
 include ':capacitor-android'
-// ❌ No incluir capacitor-cordova-android-plugins si no usas Cordova
-project(':capacitor-android').projectDir = new File('../node_modules/@capacitor/capacitor/android/src')
+project(':capacitor-android').projectDir = new File('../node_modules/@capacitor/android')

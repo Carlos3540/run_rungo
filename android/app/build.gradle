@@ -42,7 +42,7 @@ dependencies {
     // Capacitor como módulo local
     implementation project(':capacitor-android')
 
-    // Kotlin coroutines (versión estable)
+    // Kotlin coroutines
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3"
 
     // Testing
