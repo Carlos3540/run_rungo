@@ -2,4 +2,4 @@ apply from: 'capacitor.settings.gradle'
 
 include ':app'
 include ':capacitor-android'
-project(':capacitor-android').projectDir = new File('../node_modules/@capacitor/android/src')
+project(':capacitor-android').projectDir = new File('../node_modules/@capacitor/capacitor/android/src')
